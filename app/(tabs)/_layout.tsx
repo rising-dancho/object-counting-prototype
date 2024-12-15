@@ -1,24 +1,29 @@
-import { Stack } from 'expo-router';
-import { StyleSheet, LogBox } from 'react-native';
+import { Tabs } from 'expo-router';
+import { Fragment } from 'react';
+import { StyleSheet } from 'react-native';
 
-LogBox.ignoreAllLogs(true);
-
-export default function RootLayout() {
+export default function TabsLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="(tabs)"
+    <Tabs>
+      <Tabs.Screen
+        name="index"
         options={{
-          headerShown: false,
+          headerTitle: 'Sticker Smash',
         }}
       />
-      <Stack.Screen
+      <Tabs.Screen
+        name="about"
+        options={{
+          headerTitle: 'About',
+        }}
+      />
+      <Tabs.Screen
         name="not-found"
         options={{
           headerShown: false,
         }}
       />
-    </Stack>
+    </Tabs>
   );
 }
 
