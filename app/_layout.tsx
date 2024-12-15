@@ -1,4 +1,6 @@
 import { Stack } from 'expo-router';
+import { Fragment } from 'react';
+import { StyleSheet } from 'react-native';
 
 export default function RootLayout() {
   return (
@@ -7,7 +9,7 @@ export default function RootLayout() {
         name="index"
         options={{
           headerTitle: 'Sticker Smash',
-          
+          headerLeft: () => <Fragment />,
         }}
       />
       <Stack.Screen
@@ -16,6 +18,27 @@ export default function RootLayout() {
           headerTitle: 'About',
         }}
       />
+      <Stack.Screen
+        name="not-found"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#25292e',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button: {
+    fontSize: 20,
+    textDecorationLine: 'underline',
+    color: '#fff',
+  },
+});
