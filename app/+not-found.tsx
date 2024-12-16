@@ -5,7 +5,16 @@ import { Link, Stack } from 'expo-router';
 export default function NotFoundScreen() {
   return (
     <Fragment>
-      <Stack.Screen options={{ title: 'Oops! Not found' }} />
+      <Stack.Screen
+        options={{
+          title: 'Oops! Not found',
+          headerStyle: {
+            backgroundColor: '#25292e',
+          },
+          headerTintColor: '#fff',
+          headerShadowVisible: false,
+        }}
+      />
       <View style={styles.container}>
         <Link href="/" style={styles.button}>
           Go back to Home Screen!
