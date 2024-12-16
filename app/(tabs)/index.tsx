@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 1,
-    paddingTop: 28,
+    // paddingTop: 28,
   },
   footerContainer: {
-    flex: 1 / 1.65,
+    flex: 1 / 3,
     alignItems: 'center',
   },
 });
