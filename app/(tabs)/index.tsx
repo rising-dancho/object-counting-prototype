@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingTop: 28,
   },
   footerContainer: {
-    flex: 1 / 2,
+    flex: 1 / 1.65,
     alignItems: 'center',
   },
 });
