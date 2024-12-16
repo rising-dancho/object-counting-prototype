@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ImageViewer from '../../components/ImageViewer';
 
 const PlaceholderImage = require('../../assets/images/background-image.png');
