@@ -14,6 +14,8 @@ export default function TabsLayout() {
         headerTintColor: '#fff',
         tabBarStyle: {
           backgroundColor: '#25292e',
+          borderTopColor: '#3b3e43', // Change the border color here
+          borderTopWidth: 1, // Adjust border width if needed
         },
       }}
     >
