@@ -1,5 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import Button from '@/components/Button';
+import CircleButton from '@/components/CircleButton';
 import ImageViewer from '@/components/ImageViewer';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
@@ -33,7 +34,9 @@ export default function Index() {
         <ImageViewer imgSource={selectedImage || PlaceholderImage} />
       </View>
       {showAppOptions ? (
-        <View />
+        <View style={styles.footerContainer}>
+          <CircleButton onPress={() => alert('lol')}></CircleButton>
+        </View>
       ) : (
         <View style={styles.footerContainer}>
           <Button
