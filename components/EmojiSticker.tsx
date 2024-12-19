@@ -13,6 +13,9 @@ type Props = {
 };
 
 export default function EmojiSticker({ imageSize, stickerSource }: Props) {
+  const translateX = useSharedValue(imageSize);
+  const translateY = useSharedValue(0);
+
   const scaleImage = useSharedValue(imageSize);
 
   const doubleTap = Gesture.Tap()
@@ -32,15 +35,35 @@ export default function EmojiSticker({ imageSize, stickerSource }: Props) {
     };
   });
 
+  const drag = Gesture.Pan().onChange((event) => {
+    translateX.value += event.changeX;
+    translateY.value += event.changeY;
+  });
+
+  const containStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: translateX.value,
+        },
+        {
+          translateY: translateY.value,
+        },
+      ],
+    };
+  });
+
   return (
-    <View style={{ top: -350, right: -50 }}>
-      <GestureDetector gesture={doubleTap}>
-        <Animated.Image
-          source={stickerSource as ImageSourcePropType}
-          resizeMode={'contain'}
-          style={[imageStyle, { width: imageSize, height: imageSize }]}
-        />
-      </GestureDetector>
-    </View>
+    <GestureDetector gesture={drag}>
+      <Animated.View style={[containStyle, { top: -350 }]}>
+        <GestureDetector gesture={doubleTap}>
+          <Animated.Image
+            source={stickerSource as ImageSourcePropType}
+            resizeMode={'contain'}
+            style={[imageStyle, { width: imageSize, height: imageSize }]}
+          />
+        </GestureDetector>
+      </Animated.View>
+    </GestureDetector>
   );
 }
