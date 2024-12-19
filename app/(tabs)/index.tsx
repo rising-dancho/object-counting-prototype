@@ -1,6 +1,8 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useState, Fragment } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import * as MediaLibrary from 'expo-media-library';
+import { captureRef } from 'react-native-view-shot';
 import { type ImageSource } from 'expo-image';
 
 // components
@@ -16,6 +18,7 @@ const PlaceholderImage = require('@/assets/images/background-image.png');
 
 export default function Index() {
   // hooks
+  const [status, requestPermission] = MediaLibrary.usePermissions();
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
   );
@@ -24,8 +27,15 @@ export default function Index() {
   const [pickedEmoji, setPickedEmoji] = useState<ImageSource | undefined>(
     undefined
   );
+  const imageRef = useRef<View>(null);
 
   // methods
+  useEffect(() => {
+    if (!status?.granted) {
+      requestPermission();
+    }
+  }, [status, requestPermission]);
+
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -54,12 +64,32 @@ export default function Index() {
   };
 
   const onSaveImageAsync = async () => {
-    // we will implement this later
+    try {
+      const localUri = await captureRef(imageRef, {
+        height: 440,
+        quality: 1,
+        format: 'png', // Ensure PNG format to support transparency
+      });
+
+      if (Platform.OS === 'web') {
+        const response = await fetch(localUri);
+        const blob = await response.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'image.png'; // File extension supports transparency
+        a.click();
+      } else {
+        await MediaLibrary.saveToLibraryAsync(localUri);
+        alert('Saved!');
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <View ref={imageRef} style={{}}>
         <ImageViewer imgSource={selectedImage || PlaceholderImage} />
         {pickedEmoji && (
           <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
@@ -105,10 +135,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#25292e',
     alignItems: 'center',
-  },
-  imageContainer: {
-    flex: 1,
-    // paddingTop: 28,
   },
   footerContainer: {
     flex: 1 / 3,
