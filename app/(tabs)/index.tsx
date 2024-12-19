@@ -5,6 +5,7 @@ import * as MediaLibrary from 'expo-media-library';
 import { captureRef } from 'react-native-view-shot';
 import { type ImageSource } from 'expo-image';
 import domtoimage from 'dom-to-image';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // components
 import Button from '@/components/Button';
@@ -98,15 +99,18 @@ export default function Index() {
   };
 
   return (
-    <View style={styles.container}>
-      <View ref={imageRef} style={styles.imageContainer}>
-        <ImageViewer imgSource={selectedImage || PlaceholderImage} />
-        {pickedEmoji && (
-          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
-        )}
+    <GestureHandlerRootView style={styles.container}>
+      <View style={styles.imageContainer}>
+        <View ref={imageRef} collapsable={false}>
+          <ImageViewer imgSource={selectedImage || PlaceholderImage} />
+          {pickedEmoji && (
+            <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+          )}
+        </View>
       </View>
+
       {showAppOptions ? (
-        <View style={styles.optionsContainer}>
+        <View style={styles.footerContainer}>
           <View style={styles.optionsRow}>
             <IconButton icon="refresh" label="Reset" onPress={onReset} />
             <CircleButton onPress={onAddSticker} />
@@ -136,7 +140,7 @@ export default function Index() {
           onCloseModal={onModalClose}
         ></EmojiList>
       </EmojiPicker>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -147,19 +151,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
-    height: 440, // Set the desired height
-    backgroundColor: 'transparent', // Background color for the captured image
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden', // Prevents content from overflowing
+    flex: 1,
   },
   footerContainer: {
     flex: 1 / 3,
     alignItems: 'center',
-  },
-  optionsContainer: {
-    position: 'absolute',
-    bottom: 80,
   },
   optionsRow: {
     alignItems: 'center',
