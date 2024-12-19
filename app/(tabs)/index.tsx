@@ -68,16 +68,20 @@ export default function Index() {
       const localUri = await captureRef(imageRef, {
         height: 440,
         quality: 1,
-        format: 'png', // Ensure PNG format to support transparency
+        format: 'png',
       });
 
       if (Platform.OS === 'web') {
         const response = await fetch(localUri);
         const blob = await response.blob();
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = 'image.png'; // File extension supports transparency
-        a.click();
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'image.png';
+        link.click();
+
+        alert('Image downloaded!');
       } else {
         await MediaLibrary.saveToLibraryAsync(localUri);
         alert('Saved!');
@@ -89,7 +93,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <View ref={imageRef} style={{}}>
+      <View ref={imageRef} style={styles.imageContainer}>
         <ImageViewer imgSource={selectedImage || PlaceholderImage} />
         {pickedEmoji && (
           <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
@@ -135,6 +139,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#25292e',
     alignItems: 'center',
+  },
+  imageContainer: {
+    height: 440, // Set the desired height
+    backgroundColor: 'transparent', // Background color for the captured image
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden', // Prevents content from overflowing
   },
   footerContainer: {
     flex: 1 / 3,
